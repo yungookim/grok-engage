@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment variables (keep .env.example)
+.env
+.env.local
+.env.*.local
+
+# Database files
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.db-journal
+
+# Logs
+*.log
+logs/
+.ralph/logs/
+
+# Ralph session state (internal tool state)
+.ralph/.call_count
+.ralph/.circuit_breaker_*
+.ralph/.exit_signals
+.ralph/.last_reset
+.ralph/.ralph_session*
+.ralph/progress.json
+.ralph/status.json
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build output
+dist/
+build/
