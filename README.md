@@ -12,9 +12,8 @@ For founders who'd rather ship than scroll.
 
 ## See It In Action
 
-<!-- 🎬 Demo video coming soon -->
 <p align="center">
-  <em>📹 Demo video coming soon — <a href="https://github.com/yungookim/grok-engage">star this repo</a> to get notified</em>
+  <video src="https://github.com/user-attachments/assets/47ec3643-785e-48df-bb9a-49ad78d0dd45" width="100%" autoplay loop muted playsinline></video>
 </p>
 
 ---
@@ -30,7 +29,7 @@ npm start
 
 Open http://localhost:3001 → The setup wizard walks you through connecting your X API + xAI keys → Start finding threads.
 
-**Requirements:** Node.js 18+, [X API Basic tier](https://developer.x.com) ($100/mo), [xAI API key](https://x.ai)
+**Requirements:** Node.js 18+, [X API key](https://developer.x.com) (free tier works), [xAI API key](https://x.ai)
 
 ---
 
@@ -97,13 +96,13 @@ The system tracks which keywords lead to threads you engage with. Performers get
 
 ## Requirements
 
-| Requirement   | Cost      | Link                                       |
-| ------------- | --------- | ------------------------------------------ |
-| Node.js 18+   | Free      | [nodejs.org](https://nodejs.org/)          |
-| X API (Basic) | $100/mo   | [developer.x.com](https://developer.x.com) |
-| xAI API Key   | ~$5-20/mo | [x.ai](https://x.ai)                       |
+| Requirement | Cost                | Link                                       |
+| ----------- | ------------------- | ------------------------------------------ |
+| Node.js 18+ | Free                | [nodejs.org](https://nodejs.org/)          |
+| X API Key   | Free (Basic $100/mo for higher limits) | [developer.x.com](https://developer.x.com) |
+| xAI API Key | ~$5-20/mo           | [x.ai](https://x.ai)                       |
 
-**X API Budget:** Basic tier gives you 10,000 reads + 500 writes/month. The tool auto-manages your budget so you don't overspend.
+**X API Budget:** Free tier has limited reads/writes. Basic tier ($100/mo) gives 10,000 reads + 500 writes/month. The tool auto-manages your budget so you don't overspend.
 
 ---
 
@@ -254,7 +253,7 @@ npm run dev
 No. The tool uses official X API v2 endpoints and respects rate limits. It's automation, not manipulation.
 
 **How much does it cost to run?**
-X API Basic tier ($100/month) + xAI API (pay-per-use, typically $5-20/month depending on usage). That's it.
+X API is free to start (upgrade to Basic at $100/month for higher limits) + xAI API (pay-per-use, typically $5-20/month depending on usage). That's it.
 
 **Can I use it for multiple products?**
 Yes! Configure multiple product profiles and switch between them.
