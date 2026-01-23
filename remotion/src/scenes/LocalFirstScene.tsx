@@ -22,14 +22,14 @@ const BenefitRow: React.FC<{
 
   return (
     <div
-      className="flex items-center gap-4 p-4 bg-white border-2 border-black"
+      className="flex items-center gap-6 p-6 bg-white border-4 border-black"
       style={{
         transform: `scale(${Math.max(0, scale)})`,
         opacity: Math.max(0, opacity),
       }}
     >
-      <div className="text-3xl">{icon}</div>
-      <h4 className="text-black font-bold text-lg">{title}</h4>
+      <div className="text-5xl">{icon}</div>
+      <h4 className="text-black font-bold text-2xl">{title}</h4>
     </div>
   );
 };
@@ -54,7 +54,7 @@ const LLMBadge: React.FC<{
 
   return (
     <div
-      className="px-4 py-2 bg-black text-white font-bold text-sm"
+      className="px-6 py-3 bg-black text-white font-bold text-2xl"
       style={{
         transform: `scale(${Math.max(0, bounce)})`,
         opacity: Math.max(0, opacity),
@@ -77,21 +77,21 @@ export const LocalFirstScene: React.FC = () => {
 
   return (
     <div className="w-full h-full bg-white flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="relative z-10 w-full max-w-5xl px-8">
+      <div className="relative z-10 w-full max-w-7xl px-12">
         <FadeIn delay={0} duration={30}>
-          <div className="text-center mb-10">
-            <h2 className="text-5xl font-black text-black mb-4">
+          <div className="text-center mb-14">
+            <h2 className="text-7xl font-black text-black mb-6">
               100% Local-First
             </h2>
-            <p className="text-2xl text-neutral-600">
+            <p className="text-4xl text-neutral-600">
               Your machine. Your data. Your rules.
             </p>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-12">
           {/* Left column: Benefits */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <BenefitRow icon="🔐" title="Encrypted credentials" delay={30} />
             <BenefitRow icon="🚫" title="No cloud required" delay={45} />
             <BenefitRow icon="📦" title="SQLite database" delay={60} />
@@ -101,15 +101,15 @@ export const LocalFirstScene: React.FC = () => {
           {/* Right column: LLM Flexibility */}
           <div>
             <FadeIn delay={90} duration={30}>
-              <div className="p-6 bg-neutral-100 border-2 border-black h-full">
-                <h3 className="text-2xl font-black text-black mb-4">
+              <div className="p-10 bg-neutral-100 border-4 border-black h-full">
+                <h3 className="text-4xl font-black text-black mb-6">
                   🤖 Use Any LLM
                 </h3>
-                <p className="text-neutral-600 mb-6">
+                <p className="text-neutral-600 mb-8 text-2xl">
                   Swap in any model you want:
                 </p>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-4">
                   <LLMBadge name="Grok" delay={110} />
                   <LLMBadge name="GPT-4" delay={120} />
                   <LLMBadge name="Claude" delay={130} />
@@ -123,15 +123,15 @@ export const LocalFirstScene: React.FC = () => {
 
         {/* Bottom emphasis */}
         <FadeIn delay={160} duration={30}>
-          <div className="mt-10 text-center">
+          <div className="mt-14 text-center">
             <div
-              className="inline-flex items-center gap-3 px-6 py-3 border-2 border-black"
+              className="inline-flex items-center gap-4 px-10 py-5 border-4 border-black"
               style={{
                 transform: `scale(${Math.max(0, checkmarkScale)})`,
               }}
             >
-              <span className="text-black text-2xl">✓</span>
-              <span className="text-black font-bold text-xl">
+              <span className="text-black text-4xl">✓</span>
+              <span className="text-black font-bold text-3xl">
                 Just JavaScript — inspect & modify anytime
               </span>
             </div>
