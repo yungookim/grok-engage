@@ -1,0 +1,32 @@
+{
+  "name": "grok-engage",
+  "version": "1.0.0",
+  "description": "A local tool that monitors X for relevant conversations, suggests AI-powered replies via Grok, and learns from your engagement patterns",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "keywords": [
+    "twitter",
+    "x",
+    "social-media",
+    "ai",
+    "grok",
+    "monitoring"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3",
+    "openai": "^4.77.0",
+    "twitter-api-v2": "^1.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
