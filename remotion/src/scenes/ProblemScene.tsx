@@ -22,21 +22,22 @@ export const ProblemScene: React.FC = () => {
     <div className="w-full h-full bg-white flex flex-col items-center justify-center relative overflow-hidden">
       {/* Mock X Feed - scrolling */}
       <div
-        className="absolute left-1/2 top-1/2 w-96 bg-white border-2 border-black overflow-hidden"
+        className="absolute left-1/2 top-1/2 bg-white border-4 border-black overflow-hidden"
         style={{
           transform: `translate(-50%, -50%)`,
           opacity: bgOpacity,
-          height: "400px",
+          width: "700px",
+          height: "650px",
         }}
       >
-        <div className="p-4 border-b-2 border-black">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-black" />
-            <span className="text-black font-bold">For You</span>
+        <div className="p-6 border-b-4 border-black">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-black" />
+            <span className="text-black font-bold text-3xl">For You</span>
           </div>
         </div>
         <div
-          className="p-4 space-y-4"
+          className="p-6 space-y-5"
           style={{ transform: `translateY(${scrollY}px)` }}
         >
           {[
@@ -49,12 +50,12 @@ export const ProblemScene: React.FC = () => {
             "Politics post #47293",
             "Crypto to the moon",
           ].map((tweet, i) => (
-            <div key={i} className="p-3 bg-neutral-100 border border-black">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 bg-neutral-400" />
-                <span className="text-neutral-600 text-sm">@user_{i}</span>
+            <div key={i} className="p-5 bg-neutral-100 border-2 border-black">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-neutral-400" />
+                <span className="text-neutral-600 text-2xl">@user_{i}</span>
               </div>
-              <p className="text-black text-sm">{tweet}</p>
+              <p className="text-black text-2xl">{tweet}</p>
             </div>
           ))}
         </div>
@@ -62,16 +63,16 @@ export const ProblemScene: React.FC = () => {
 
       {/* Frustrated text overlay */}
       <div
-        className="absolute bottom-24 left-0 right-0 text-center"
+        className="absolute bottom-32 left-0 right-0 text-center"
         style={{ opacity: frustratedOpacity }}
       >
         <FadeIn delay={100} duration={30}>
-          <p className="text-5xl font-black text-black mb-4">
+          <p className="text-7xl font-black text-black mb-6">
             45 min scrolling...
           </p>
         </FadeIn>
         <FadeIn delay={120} duration={30}>
-          <p className="text-2xl text-neutral-600">
+          <p className="text-4xl text-neutral-600">
             Zero relevant threads.
           </p>
         </FadeIn>
@@ -79,11 +80,11 @@ export const ProblemScene: React.FC = () => {
 
       {/* Time indicator */}
       <div
-        className="absolute top-8 right-8 text-black font-mono"
+        className="absolute top-12 right-12 text-black font-mono"
         style={{ opacity: bgOpacity }}
       >
         <FadeIn delay={20} duration={25}>
-          <span className="text-2xl font-bold">
+          <span className="text-5xl font-bold">
             ⏱️{" "}
             {Math.floor(
               interpolate(frame, [30, 140], [0, 45], {
