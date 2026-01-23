@@ -180,6 +180,13 @@ export async function triggerExperimentation() {
     return request('/settings/trigger-experimentation', { method: 'POST' });
 }
 
+export async function browserDiscovery(tweets, keyword) {
+    return request('/settings/browser-discovery', {
+        method: 'POST',
+        body: { tweets, keyword }
+    });
+}
+
 // ============================================
 // Keywords
 // ============================================

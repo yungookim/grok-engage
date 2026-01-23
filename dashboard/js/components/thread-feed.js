@@ -42,9 +42,17 @@ export async function renderThreadFeed(container, state) {
     // Right side: status + button
     const headerRight = createElement('div', '', 'flex items-center gap-4');
 
-    // Trigger discovery button
-    const discoverBtn = createElement('button', 'Run Discovery', 'bg-x-blue hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm');
+    // Browser discovery button (no API rate limits)
+    const browserDiscoverBtn = createElement('button', 'Browser Discovery', 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm');
+    browserDiscoverBtn.id = 'browser-discovery-btn';
+    browserDiscoverBtn.title = 'Scrape X via browser - no API rate limits';
+    browserDiscoverBtn.addEventListener('click', handleBrowserDiscovery);
+    headerRight.appendChild(browserDiscoverBtn);
+
+    // Trigger discovery button (uses X API)
+    const discoverBtn = createElement('button', 'API Discovery', 'bg-x-blue hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm');
     discoverBtn.id = 'discovery-btn';
+    discoverBtn.title = 'Uses X API - subject to rate limits';
     discoverBtn.addEventListener('click', handleTriggerDiscovery);
     headerRight.appendChild(discoverBtn);
 
@@ -276,6 +284,59 @@ async function handleSkipThread(thread) {
         await loadThreads();
     } catch (error) {
         console.error('Failed to skip thread:', error);
+    }
+}
+
+/**
+ * Handle browser discovery button click
+ * Shows instructions for using Claude to scrape X
+ */
+async function handleBrowserDiscovery() {
+    const btn = document.getElementById('browser-discovery-btn');
+
+    if (btn) {
+        btn.textContent = 'Ready for Claude';
+        btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+        btn.classList.add('bg-yellow-600', 'hover:bg-yellow-700');
+    }
+
+    // Show instruction modal/banner
+    const errorBanner = document.getElementById('discovery-errors');
+    if (errorBanner) {
+        while (errorBanner.firstChild) {
+            errorBanner.removeChild(errorBanner.firstChild);
+        }
+
+        const content = createElement('div', '', 'bg-green-900/30 border border-green-700 rounded-lg p-4');
+
+        const header = createElement('div', '', 'flex justify-between items-start mb-2');
+        const title = createElement('h4', 'Browser Discovery Ready', 'text-green-400 font-semibold');
+        header.appendChild(title);
+
+        const dismissBtn = createElement('button', '\u00d7', 'text-green-400 hover:text-white text-xl leading-none');
+        dismissBtn.addEventListener('click', () => {
+            errorBanner.className = 'hidden';
+            if (btn) {
+                btn.textContent = 'Browser Discovery';
+                btn.classList.remove('bg-yellow-600', 'hover:bg-yellow-700');
+                btn.classList.add('bg-green-600', 'hover:bg-green-700');
+            }
+        });
+        header.appendChild(dismissBtn);
+        content.appendChild(header);
+
+        const instructions = createElement('div', '', 'text-green-300 text-sm space-y-2');
+        const step1 = createElement('p', 'Ask Claude to run browser discovery. Example:');
+        const example = createElement('code', '"Run browser discovery for my keywords"', 'block bg-gray-800 px-3 py-2 rounded mt-1 text-gray-200');
+        step1.appendChild(example);
+        instructions.appendChild(step1);
+
+        const step2 = createElement('p', 'Claude will scrape X search results and send them to this app for processing.', 'mt-2 text-gray-400');
+        instructions.appendChild(step2);
+
+        content.appendChild(instructions);
+        errorBanner.appendChild(content);
+        errorBanner.className = 'mb-4';
     }
 }
 

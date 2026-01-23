@@ -21,6 +21,7 @@ import { getUsageStats, validateCredentials as validateXCredentials, resetClient
 import { validateApiKey as validateXaiKey, resetClient as resetLlmClient, hasApiKey as hasXaiKey, extractProductProfile } from '../services/llm.js';
 import { generateKeywordsForProfile } from '../services/keyword-generator.js';
 import { getSchedulerStatus, triggerDiscovery, triggerExperimentation, restartScheduler } from '../services/scheduler.js';
+import { processBrowserTweets } from '../services/browser-discovery.js';
 
 const router = Router();
 
@@ -121,6 +122,41 @@ router.post('/trigger-experimentation', async (req, res) => {
     } catch (error) {
         console.error('Error triggering experimentation:', error);
         res.status(500).json({ error: 'Failed to trigger experimentation' });
+    }
+});
+
+/**
+ * POST /api/settings/browser-discovery
+ * Process tweets scraped via browser automation
+ * This bypasses X API rate limits by accepting data from Claude-in-Chrome
+ *
+ * Body:
+ * - tweets: array of scraped tweet objects
+ * - keyword: string - the keyword that was searched
+ */
+router.post('/browser-discovery', async (req, res) => {
+    try {
+        const { tweets, keyword } = req.body;
+
+        if (!tweets || !Array.isArray(tweets)) {
+            return res.status(400).json({ error: 'tweets array is required' });
+        }
+
+        if (!keyword || typeof keyword !== 'string') {
+            return res.status(400).json({ error: 'keyword string is required' });
+        }
+
+        console.log(`[BrowserDiscovery] Received ${tweets.length} tweets for keyword "${keyword}"`);
+
+        const results = await processBrowserTweets(tweets, keyword);
+
+        res.json({
+            success: true,
+            ...results
+        });
+    } catch (error) {
+        console.error('Error processing browser discovery:', error);
+        res.status(500).json({ error: 'Failed to process browser discovery' });
     }
 });
 

@@ -27,9 +27,9 @@ npm install
 npm start
 ```
 
-Open http://localhost:3001 → The setup wizard walks you through connecting your X API + xAI keys → Start finding threads.
+Open http://localhost:3001 → The setup wizard walks you through configuration → Start finding threads.
 
-**Requirements:** Node.js 18+, [X API key](https://developer.x.com) (free tier works), [xAI API key](https://x.ai)
+**Requirements:** Node.js 18+, [xAI API key](https://x.ai) for reply generation. That's it — no X API needed for discovery.
 
 ---
 
@@ -65,9 +65,10 @@ Repeat daily. Wonder why growth is slow.
 
 Find conversations worth joining — automatically.
 
-- Real-time keyword monitoring
+- **Browser-based discovery** — scrapes X directly, no API limits
 - Smart filtering (15+ replies only — no dead threads)
 - Relevance scoring (0-100) and tone detection
+- Works with Claude Code for hands-free discovery
 
 ### Reply Generation
 
@@ -96,13 +97,15 @@ The system tracks which keywords lead to threads you engage with. Performers get
 
 ## Requirements
 
-| Requirement | Cost                | Link                                       |
+| Requirement | Cost                | Purpose                                    |
 | ----------- | ------------------- | ------------------------------------------ |
-| Node.js 18+ | Free                | [nodejs.org](https://nodejs.org/)          |
-| X API Key   | Free (Basic $100/mo for higher limits) | [developer.x.com](https://developer.x.com) |
-| xAI API Key | ~$5-20/mo           | [x.ai](https://x.ai)                       |
+| Node.js 18+ | Free                | Runtime                                    |
+| xAI API Key | ~$5-20/mo           | Reply generation ([x.ai](https://x.ai))    |
+| X API Key   | Optional            | Only for one-click posting                 |
 
-**X API Budget:** Free tier has limited reads/writes. Basic tier ($100/mo) gives 10,000 reads + 500 writes/month. The tool auto-manages your budget so you don't overspend.
+**No X API needed for discovery!** Browser-based scraping finds threads without hitting API rate limits. You can run discovery all day long.
+
+**X API is optional** — only required if you want to post replies directly from the app. Otherwise, copy the generated reply and post manually.
 
 ---
 
@@ -117,14 +120,15 @@ cp .env.example .env
 ```
 
 ```env
-# X API Credentials (get from developer.x.com)
+# xAI API Key (required for reply generation - get from x.ai)
+XAI_API_KEY=your_grok_api_key
+
+# X API Credentials (optional - only for one-click posting)
+# Get from developer.x.com if you want to post directly
 X_API_KEY=your_api_key
 X_API_SECRET=your_api_secret
 X_ACCESS_TOKEN=your_access_token
 X_ACCESS_SECRET=your_access_secret
-
-# xAI API Key (get from x.ai)
-XAI_API_KEY=your_grok_api_key
 
 # Server Config (optional)
 PORT=3001
@@ -148,13 +152,14 @@ Tell the tool about your product so it knows when (and how) to mention it:
 
 ## Tech Stack
 
-| Component     | Technology               |
-| ------------- | ------------------------ |
-| Backend       | Node.js, Express         |
-| Database      | SQLite (local, no setup) |
-| Frontend      | Vanilla JS, Tailwind CSS |
-| AI            | Grok via xAI API         |
-| X Integration | twitter-api-v2           |
+| Component     | Technology                          |
+| ------------- | ----------------------------------- |
+| Backend       | Node.js, Express                    |
+| Database      | SQLite (local, no setup)            |
+| Frontend      | Vanilla JS, Tailwind CSS            |
+| AI            | Grok via xAI API                    |
+| Discovery     | Browser scraping (Claude-in-Chrome) |
+| Posting       | twitter-api-v2 (optional)           |
 
 **Why these choices?**
 
@@ -167,31 +172,42 @@ Tell the tool about your product so it knows when (and how) to mention it:
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Your Machine                          │
-│                                                          │
-│  ┌──────────────┐    ┌──────────────┐    ┌───────────┐  │
-│  │   Dashboard  │◄──►│    Server    │◄──►│  SQLite   │  │
-│  │  (Browser)   │    │  (Express)   │    │    DB     │  │
-│  └──────────────┘    └──────┬───────┘    └───────────┘  │
-│                             │                            │
-└─────────────────────────────┼────────────────────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────┐
-               │     External APIs        │
-               │  ┌────────┐ ┌─────────┐  │
-               │  │ X API  │ │ xAI API │  │
-               │  └────────┘ └─────────┘  │
-               └──────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                       Your Machine                            │
+│                                                               │
+│  ┌──────────────┐    ┌──────────────┐    ┌───────────┐       │
+│  │   Dashboard  │◄──►│    Server    │◄──►│  SQLite   │       │
+│  │  (Browser)   │    │  (Express)   │    │    DB     │       │
+│  └──────────────┘    └──────┬───────┘    └───────────┘       │
+│                             │                                 │
+│  ┌──────────────────────────┼──────────────────────────────┐ │
+│  │  Browser Discovery       │                              │ │
+│  │  (Claude-in-Chrome)      │                              │ │
+│  │  - Scrapes X search      ▼                              │ │
+│  │  - No API limits    ┌─────────┐   ┌─────────┐           │ │
+│  │  - Runs all day     │ xAI API │   │ X API   │ (optional)│ │
+│  └─────────────────────└─────────┘   └─────────┘───────────┘ │
+└──────────────────────────────────────────────────────────────┘
 ```
+
+**Two discovery modes:**
+- **Browser Discovery** — Scrapes X directly via Claude-in-Chrome. No rate limits.
+- **API Discovery** — Uses X API (optional, has rate limits)
 
 ---
 
-## API Budget Management
+## Discovery Modes
 
-The tool tracks your X API usage and prevents overspending:
+### Browser Discovery (Recommended)
 
+Uses Claude-in-Chrome to scrape X search results directly:
+- **No API rate limits** — run discovery all day
+- Works with your active keywords
+- Ask Claude: "Run browser discovery for my keywords"
+
+### API Discovery (Optional)
+
+If you have X API credentials configured:
 - Displays remaining reads/writes for the month
 - Calculates daily budget based on days remaining
 - Warns before operations that exceed capacity
@@ -249,11 +265,11 @@ npm run dev
 
 ## FAQ
 
-**Is this against X's Terms of Service?**
-No. The tool uses official X API v2 endpoints and respects rate limits. It's automation, not manipulation.
+**Do I need an X API key?**
+No! Browser-based discovery scrapes X directly — no API needed. X API is only required if you want one-click posting from the app.
 
 **How much does it cost to run?**
-X API is free to start (upgrade to Basic at $100/month for higher limits) + xAI API (pay-per-use, typically $5-20/month depending on usage). That's it.
+Just xAI API costs (~$5-20/month for reply generation). Browser discovery is free with no rate limits.
 
 **Can I use it for multiple products?**
 Yes! Configure multiple product profiles and switch between them.
