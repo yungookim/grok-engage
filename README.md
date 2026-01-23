@@ -13,7 +13,7 @@ For founders who'd rather ship than scroll.
 ## See It In Action
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/47ec3643-785e-48df-bb9a-49ad78d0dd45" width="100%" autoplay loop muted playsinline></video>
+  <video src="https://github.com/user-attachments/assets/94658c5f-0ba7-475a-b9ef-20afa9b5f55e" width="100%" autoplay loop muted playsinline></video>
 </p>
 
 ---
